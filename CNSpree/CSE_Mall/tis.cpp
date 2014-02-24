@@ -7,11 +7,11 @@ const int PORTS[] = {11000,11010,11020};
 /*
 	Port 12000 serves as verification Port
 
-	Port 15000 serves are termination Port - After a connection is received on this,
+	Port 13000 serves are termination Port - After a connection is received on this,
 	the server cannot accept any more connections as corresponding servicing servers
 	are full with load.
 */
-const int SERV_PORTS[] = {12000,15000};
+const int SERV_PORTS[] = {12000,13000};
 
 #define MAXLINE 512
 #define MAXBUF	4096
@@ -19,9 +19,13 @@ const int SERV_PORTS[] = {12000,15000};
 #define MAX_T	50
 
 //-------------Global Variables---------------
+//Current ticket counter
 int t_issued=0;
+
+//Tickets counter - keeps track of what all tickets have been issued
 int tickets[MAX_T] = {0};
 
+//Sockets g1,g2,g3 - on which the server is listening for clients
 int g_sfd[3];
 struct sockaddr_in clients[3], g_addr[3];
 int clilen[3];
