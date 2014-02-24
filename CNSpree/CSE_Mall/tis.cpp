@@ -73,7 +73,7 @@ int main(int argc, char *argv[]){
 		int n;
 		n = recv(nsfd,read_buf,MAXBUF,0);
 		printf("The client wants to connect to - %s\n",read_buf);
-		
+
 		int ticket = getTicket();
 		sprintf(ticketMessage, "Your Ticket Number is - %d ", ticket);
 		send(nsfd, ticketMessage, strlen(ticketMessage), 0);

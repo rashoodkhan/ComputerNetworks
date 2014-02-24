@@ -36,7 +36,7 @@ int main(int argc, char *argv[]){
 	bzero(buf,MAXLINE);
 	n = readline(sockfd,buf,MAXLINE);
 	string msg = buf;
-	int hash = msg.find("#");
+	int hash = msg.find("-");
 	printf("%s %d\n",buf,hash);
 	close(sockfd);
 }

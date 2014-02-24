@@ -11,14 +11,17 @@
 */
 
 #include <unistd.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
+#include <cstdlib>
+#include <cstring>
+#include <cstdio>
+#include <string>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/wait.h>
 #include <arpa/inet.h>
 #include <netdb.h>
+
+using namespace std;
 
 #define MAXLINE 512
 //Reads n bytes from the fd
