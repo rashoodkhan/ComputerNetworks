@@ -4,9 +4,14 @@
 //Ports for listening to clients
 const int PORTS[] = {11000,11010,11020};
 
-#define G1 9000
-#define G2 9010
-#define G3 9020
+/*
+	Port 12000 serves as verification Port
+
+	Port 15000 serves are termination Port - After a connection is received on this,
+	the server cannot accept any more connections as corresponding servicing servers
+	are full with load.
+*/
+const int SERV_PORTS[] = {12000,15000};
 
 #define MAXLINE 512
 #define MAXBUF	4096
@@ -21,6 +26,8 @@ int g_sfd[3];
 struct sockaddr_in clients[3], g_addr[3];
 int clilen[3];
 
+bool serversAreFull = false;
+
 struct fd_set read_fd;
 struct timeval timeout;
 //--------------Function Prototypes------------
@@ -29,23 +36,12 @@ void init();
 void _listen();
 int getMaxFD();
 void refreshSelect();
+bool verifyTicket(int);
+void setLimit();
 
 int main(int argc, char *argv[]){
 	init();
 	_listen();
-	/*int sockfd = socket(AF_INET,SOCK_STREAM,0);
-	struct sockaddr_in serv;
-	bzero ((char *) &serv, sizeof(serv));
-	serv.sin_family = AF_INET;
-	serv.sin_addr.s_addr = htonl(INADDR_ANY);
-	serv.sin_port = htons(G1);
-	bind(sockfd,(struct sockaddr *) &serv, sizeof(serv));
-	listen(sockfd,5);
-	clilen[0] = sizeof(clients[0]);
-	int asfd = accept(sockfd,(struct sockaddr *) &clients[0], &clilen[0]);
-	write(asfd,"Hello World",11);
-	return 0;
-	*/
 	char ticketMessage[32];
 	char read_buf[MAXBUF];
 	int i;
@@ -128,4 +124,22 @@ int getMaxFD(){
 		maxfd = g_sfd[2];
 
 	return maxfd;
+}
+
+bool verifyTicket(int tick){
+	bool check = false;
+	int i = 0;
+	for(;i<t_issued;i++){
+		if (tickets[i] == tick)
+			return true;
+	}
+	return check;
+}
+
+void setLimit(){
+	serversAreFull = true;
+}
+
+void unsetLimit(){
+	serversAreFull = false;
 }
