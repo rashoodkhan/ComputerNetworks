@@ -1,6 +1,5 @@
 #include "headers.h"
 
-
 #define IN_PORT	15000	//Incoming Port for clients to connect
 #define TIS_VER 12000	//TIS Verfication port
 #define TIS_CNL 13000	//TIS Cancellation port
@@ -19,7 +18,7 @@ struct sockaddr_in myaddr, cliaddr, serv_addr;
 struct hostent *hp;
 
 
-int clilen;
+socklen_t clilen;
 int serv_sfd, cli_sfd;
 //---------------Function Prototypes----------
 void serv_init();
@@ -41,7 +40,7 @@ int main(int argc, char *argv[]){
 				cli_init("localhost",VERFY);
 
 				send(cli_sfd,message,n,0);
-				bzero(message,MAXLINE)
+				bzero(message,MAXLINE);
 				n = recv(cli_sfd,message,MAXLINE,0);
 
 				int check = strcmp("ACCEPT",message);
@@ -95,7 +94,7 @@ void serv_init(){
 }
 
 void cli_init(char *hostname,int block){
-	hp = gethostname(hostname);
+	hp = gethostbyname(hostname);
 
 	bzero((char *) &serv_addr,sizeof(serv_addr));
 	serv_addr.sin_family = AF_INET;
